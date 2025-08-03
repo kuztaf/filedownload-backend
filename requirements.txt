@@ -3,3 +3,4 @@ flower
 fastapi
 uvicorn
 pip
+mysqlclient
