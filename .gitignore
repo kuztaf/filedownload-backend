@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+.env*
+venv/
+.venv/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Env files
+.env
+
+# Others
+*.sqlite3
+*.db
+*.egg-info/
+
+# Node
+node_modules/
+
+# Test
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Flower
+flower.log
