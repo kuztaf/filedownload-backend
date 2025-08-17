@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -11,32 +10,24 @@ services:
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
 
-  celery:
-    image: celery
+  worker:
     build:
       context: .
-    command: celery -A your_project worker --loglevel=info
+    command: python download/worker/worker.py
     environment:
-      - CELERY_BROKER_URL=amqp://user:password@rabbitmq:5672//
+      - PYTHONPATH=/app
     depends_on:
       - rabbitmq
-
-  flower:
-    image: mher/flower
-    ports:
-      - "5555:5555"
-    depends_on:
-      - rabbitmq
-      - celery
+      - mysql
 
   mysql:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: documentdb
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: rootpass # root solo para admin
+      MYSQL_DATABASE: documentdb # base de datos
+      MYSQL_USER: myuser # usuario de la app
+      MYSQL_PASSWORD: mypass # clave del usuario
     ports:
       - "3306:3306"
     volumes:
@@ -53,8 +44,9 @@ services:
       - "8000:8000"
     depends_on:
       - mysql
+      - rabbitmq
     environment:
-      - DATABASE_URL=mysql+pymysql://user:password@mysql:3306/documentdb
+      - DATABASE_URL=mysql+pymysql://myuser:mypass@mysql:3306/documentdb
 
 volumes:
   rabbitmq-data:
